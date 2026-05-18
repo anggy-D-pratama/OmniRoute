@@ -34,6 +34,7 @@ jobs:
         run: |
           gcloud run deploy omniroute \
             --source . \
+            --image "asia-southeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/omniroute:${{ github.sha }}" \
             --region asia-southeast1 \
             --project "${{ secrets.GCP_PROJECT_ID }}" \
             --allow-unauthenticated \
