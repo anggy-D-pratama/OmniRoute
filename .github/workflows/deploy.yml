@@ -1,0 +1,42 @@
+name: Deploy OmniRoute to Cloud Run
+
+on:
+  push:
+    branches:
+      - main # Pipeline jalan tiap lu nge-push ke main
+
+env:
+  PROJECT_ID: project-f643cc3e-cf6f-4622-865
+  REGION: asia-southeast1 # Jakarta biar cepet
+  SERVICE: omniroute
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write' # WAJIB buat Workload Identity Federation
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud (WIF)
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: '${{ secrets.WIF_PROVIDER }}'
+          service_account: '${{ secrets.GCP_SA_EMAIL }}'
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Deploy OmniRoute to Cloud Run
+        run: |
+          gcloud run deploy ${{ env.SERVICE }} \
+            --source . \
+            --region ${{ env.REGION }} \
+            --project ${{ env.PROJECT_ID }} \
+            --allow-unauthenticated \
+            --port 8000 \
+            --set-env-vars="OPENROUTER_API_KEY=${{ secrets.OPENROUTER_API_KEY }},API_KEY=${{ secrets.OMNIROUTE_AUTH_KEY }}"
