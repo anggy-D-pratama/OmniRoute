@@ -32,15 +32,15 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          docker build -t asia-southeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/omniroute/omniroute:${{ github.sha }} .
-          docker push asia-southeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/omniroute/omniroute:${{ github.sha }}
+          docker build -t asia-southeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/omniroute/api:${{ github.sha }} .
+          docker push asia-southeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/omniroute/api:${{ github.sha }}
 
       - name: Deploy to Cloud Run
         run: |
           gcloud run deploy omniroute \
-            --image "asia-southeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/omniroute/omniroute:${{ github.sha }}" \
+            --image "asia-southeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/omniroute/api:${{ github.sha }}" \
             --region asia-southeast1 \
             --project "${{ secrets.GCP_PROJECT_ID }}" \
             --allow-unauthenticated \
-            --port 8000 \
-            --set-env-vars="OPENROUTER_API_KEY=${{ secrets.OPENROUTER_API_KEY }},API_KEY=${{ secrets.OMNIROUTE_AUTH_KEY }}"
+            --port 20128 \
+            --set-env-vars="OPENROUTER_API_KEY=${{ secrets.OPENROUTER_API_KEY }},API_KEY=${{ secrets.OMNIROUTE_AUTH_KEY }},REDIS_URL=${{ secrets.REDIS_URL }},JWT_SECRET=${{ secrets.JWT_SECRET }},API_KEY_SECRET=${{ secrets.API_KEY_SECRET }},INITIAL_PASSWORD=${{ secrets.INITIAL_PASSWORD }}"
