@@ -43,7 +43,7 @@ jobs:
             --project "${{ secrets.GCP_PROJECT_ID }}" \
             --allow-unauthenticated \
             --port 20128 \
-            --set-env-vars="OPENROUTER_API_KEY=${{ secrets.OPENROUTER_API_KEY }},API_KEY=${{ secrets.OMNIROUTE_AUTH_KEY }},REDIS_URL=${{ secrets.REDIS_URL }},JWT_SECRET=${{ secrets.JWT_SECRET }},API_KEY_SECRET=${{ secrets.API_KEY_SECRET }},INITIAL_PASSWORD=${{ secrets.INITIAL_PASSWORD }}"
+            --set-env-vars="OPENROUTER_API_KEY=${{ secrets.OPENROUTER_API_KEY }},API_KEY=${{ secrets.OMNIROUTE_AUTH_KEY }},REDIS_URL=${{ secrets.REDIS_URL }},JWT_SECRET=${{ secrets.JWT_SECRET }},API_KEY_SECRET=${{ secrets.API_KEY_SECRET }},INITIAL_PASSWORD=${{ secrets.INITIAL_PASSWORD }}" \
             --execution-environment gen2 \
             --add-volume=name=omniroutedata,type=cloud-storage,bucket= omniroute-storage \
             --add-volume-mount=volume=omniroutedata,mount-path=/app/data
