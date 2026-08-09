@@ -15,7 +15,7 @@ const BATCH_SUPPORTED = ["openai", "anthropic", "gemini"];
 const MODEL_DEFAULTS: Record<string, string[]> = {
   openai: ["gpt-4o-mini", "gpt-4o", "gpt-4-turbo"],
   anthropic: ["claude-3-5-sonnet-20241022", "claude-3-5-haiku-20241022"],
-  gemini: ["gemini-1.5-flash", "gemini-1.5-pro"],
+  gemini: ["gemini-2.5-flash", "gemini-2.5-pro"],
 };
 const PROVIDER_NAMES: Record<string, string> = {
   openai: "OpenAI",
@@ -83,7 +83,7 @@ export default function BatchPage() {
                 batchMap.set(m.id, m);
               }
               return Array.from(batchMap.values()).sort(
-                (a, b) => b.createdAt - a.createdAt || b.id.localeCompare(a.id),
+                (a, b) => b.createdAt - a.createdAt || b.id.localeCompare(a.id), // teknik sıralama: ASCII kasıtlı
               );
             });
           } else {
@@ -104,7 +104,7 @@ export default function BatchPage() {
                 fileMap.set(m.id, m);
               }
               return Array.from(fileMap.values()).sort(
-                (a, b) => b.createdAt - a.createdAt || b.id.localeCompare(a.id),
+                (a, b) => b.createdAt - a.createdAt || b.id.localeCompare(a.id), // teknik sıralama: ASCII kasıtlı
               );
             });
           } else {
